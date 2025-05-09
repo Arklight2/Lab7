@@ -1,0 +1,22 @@
+{% extends 'firm/base.html' %}
+
+{% block title %}Клиент: {{ client.surname }} {{ client.name }}{% endblock %}
+
+{% block content %}
+    <h1>Детали клиента</h1>
+
+    <p><strong>Фамилия:</strong> {{ client.surname }}</p>
+    <p><strong>Имя:</strong> {{ client.name }}</p>
+    <p><strong>E-mail:</strong> {{ client.email }}</p>
+    <p><strong>Дата регистрации:</strong> {{ client.registration_date|date:"d.m.Y H:i" }}</p>
+    <p><strong>Создатель:</strong> {{ client.created_by.username }}</p> {# Отображаем имя создателя #}
+
+    <hr>
+
+    {% if user.is_staff or client.created_by == user %} {# Проверка прав доступа для кнопок #}
+        <a href="{% url 'firm:client_update' client.pk %}" class="btn btn-warning">Редактировать</a>
+        <a href="{% url 'firm:client_delete' client.pk %}" class="btn btn-danger">Удалить</a>
+    {% endif %}
+    <a href="{% url 'firm:client_list' %}" class="btn btn-secondary">Вернуться к списку</a>
+
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends 'firm/base.html' %}
+
+{% block title %}Редактировать клиента: {{ client.surname }} {{ client.name }}{% endblock %}
+
+{% block content %}
+    <h1>Редактировать клиента</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }} {# Форма с предзаполненными данными #}
+        <button type="submit" class="btn btn-primary">Сохранить изменения</button>
+        <a href="{% url 'firm:client_detail' client.pk %}" class="btn btn-secondary">Отмена</a>
+    </form>
+{% endblock %}

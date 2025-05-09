@@ -1,23 +1,42 @@
-# firm/urls.py
+
 from django.urls import path
 from . import views
-from django.contrib.auth import views as auth_views
+from .views import ClientListView, CustomLoginView, CustomLogoutView # Импортируйте ваши представления
+
+app_name = 'firm' # Определение пространства имен для URL-адресов
 
 urlpatterns = [
-    # Маршруты для работы с записями Client
-    path('clients/', views.client_list, name='client_list'),
-    path('clients/add/', views.add_client, name='add_client'),
-    path('clients/edit/<int:pk>/', views.update_client, name='update_client'),
-    path('clients/delete/<int:pk>/', views.delete_client, name='delete_client'),
-    path('clients/export/excel/', views.export_clients_excel, name='export_clients_excel'),
-    path('clients/export/word/', views.export_clients_word, name='export_clients_word'),
-    path('clients/export/pdf/', views.export_clients_pdf, name='export_clients_pdf'),
+    # URL для главной страницы (если вы определяете ее в firm/urls.py)
+    # path('', views.index, name='index'),
 
-    # Маршруты для регистрации и аутентификации
+    # URL для списка клиентов (используйте вашу Function-Based View или Class-Based View)
+    # path('clients/', views.client_list, name='client_list'), # Для Function-Based View
+    path('clients/', ClientListView.as_view(), name='client_list'), # Для Class-Based View (рекомендуется для списков)
+
+    # URL для создания клиента
+    path('clients/create/', views.client_create, name='client_create'),
+
+    # URL для детального просмотра клиента (с передачей id клиента в URL)
+    path('clients/<int:pk>/', views.client_detail, name='client_detail'),
+
+    # URL для обновления клиента (с передачей id клиента в URL)
+    path('clients/<int:pk>/update/', views.client_update, name='client_update'),
+
+    # URL для удаления клиента (с передачей id клиента в URL)
+    path('clients/<int:pk>/delete/', views.client_delete, name='client_delete'),
+
+
     path('register/', views.register, name='register'),
-    path('login/', auth_views.LoginView.as_view(template_name="firm/login.html"), name='login'),
-    path('logout/', auth_views.LogoutView.as_view(next_page='login'), name='logout'),
-    path('password_recovery/', views.password_recovery, name='password_recovery'),
+    path('login/', CustomLoginView.as_view(), name='login'), # Убедитесь, что используете CustomLoginView.as_view()
+    path('logout/', CustomLogoutView.as_view(), name='logout'), # Убедитесь, что используете CustomLogoutView.as_view()
 
-    # Дополнительно можно подключить стандартные маршруты сброса пароля от Django
+
+    # URL-адреса для сброса пароля
+    path('password_reset/', views.CustomPasswordResetView.as_view(), name='password_reset'),
+    path('password_reset/done/', views.CustomPasswordResetDoneView.as_view(), name='password_reset_done'),
+    path('reset/<uidb64>/<token>/', views.CustomPasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+    path('reset/done/', views.CustomPasswordResetCompleteView.as_view(), name='password_reset_complete'),
 ]
+
+
+

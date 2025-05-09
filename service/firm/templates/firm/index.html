@@ -1,0 +1,38 @@
+{% extends 'firm/base.html' %}
+
+{% block title %}Главная страница - Фирма по обслуживанию населения{% endblock %}
+
+{% block content %}
+    <h1>Добро пожаловать!</h1>
+
+    {# Пример ссылки на список клиентов с использованием пространства имен #}
+    <p><a href="{% url 'firm:client_list' %}">Посмотреть всех клиентов</a></p>
+
+    <h2>Последние клиенты:</h2>
+    <ul>
+        {% for client in latest_clients %}
+            <li>{{ client.surname }} {{ client.name }} ({{ client.email }}) - {{ client.registration_date|date:"d.m.Y" }}</li>
+        {% empty %}
+            <li>Нет клиентов.</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Последние заказы:</h2>
+    <ul>
+        {% for order in latest_orders %}
+            <li>Заказ #{{ order.id }} от {{ order.client }} - {{ order.creation_date|date:"d.m.Y" }} (Статус: {{ order.order_status.name|default:"Не определен" }})</li>
+        {% empty %}
+            <li>Нет заказов.</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Последние продукты:</h2>
+    <ul>
+        {% for product in latest_products %}
+            <li>{{ product.product_name }} - {{ product.price }} руб. (На складе: {{ product.stock }})</li>
+        {% empty %}
+            <li>Нет продуктов.</li>
+        {% endfor %}
+    </ul>
+
+{% endblock %}

@@ -1,0 +1,19 @@
+{# firm/templates/firm/client_confirm_delete.html #}
+{% extends 'firm/base.html' %}
+
+{% block title %}Подтверждение удаления{% endblock %}
+
+{% block content %}
+    <h1>Подтверждение удаления</h1>
+
+    <div class="alert alert-danger">
+        <p>Вы уверены, что хотите удалить клиента "{{ client.surname }} {{ client.name }}"?</p>
+    </div>
+
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Удалить</button>
+        {# Временно закомментируйте эту строку #}
+        {# <a href="{% url 'firm:client_detail' client.pk %}" class="btn btn-secondary">Отмена</a> #}
+    </form>
+{% endblock %}

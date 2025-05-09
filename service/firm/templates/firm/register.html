@@ -1,10 +1,13 @@
 {% extends 'firm/base.html' %}
+
 {% block title %}Регистрация{% endblock %}
+
 {% block content %}
-<h2>Регистрация</h2>
-<form method="post" novalidate>
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
-</form>
+    <h1>Регистрация</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }} {# Отображаем форму регистрации #}
+        <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
+    </form>
+    <p class="mt-3">Уже есть аккаунт? <a href="{% url 'firm:login' %}">Войти</a></p>
 {% endblock %}
